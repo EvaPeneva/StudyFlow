@@ -1,0 +1,42 @@
+erDiagram
+    PROFILES ||--o{ SUBJECTS : owns
+    PROFILES ||--o{ TASKS : owns
+    SUBJECTS ||--o{ TASKS : groups
+    TASKS ||--o{ REMINDERS : has
+    TASKS ||--o{ TASK_TAGS : labeled
+
+    PROFILES {
+        uuid id PK,FK
+        text display_name
+        timestamptz created_at
+    }
+    SUBJECTS {
+        uuid id PK
+        uuid user_id FK
+        text name
+        text color
+    }
+    TASKS {
+        uuid id PK
+        uuid user_id FK
+        uuid subject_id FK
+        text title
+        text description
+        date due_date
+        smallint priority
+        integer estimated_minutes
+        boolean is_completed
+    }
+    REMINDERS {
+        uuid id PK
+        uuid user_id FK
+        uuid task_id FK
+        timestamptz remind_at
+        boolean is_sent
+    }
+    TASK_TAGS {
+        uuid id PK
+        uuid user_id FK
+        uuid task_id FK
+        text label
+    }
