@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyFlow — ученически планер за задачи и срокове.">
+  <title>StudyFlow — Ученически планер</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" id="brand-link" aria-label="StudyFlow начало">
+        <span class="brand-mark">✦</span>
+        <span>Study<span class="brand-accent">Flow</span><small>STUDENT PLANNER</small></span>
+      </a>
+      <div class="side-label" data-i18n="workspace">РАБОТНО ПРОСТРАНСТВО</div>
+      <nav class="navigation" aria-label="Основна навигация">
+        <button class="nav-item active" data-page="dashboard" type="button"><span>◫</span><span data-i18n="dashboard">Табло</span></button>
+        <button class="nav-item" data-page="tasks" type="button"><span>☑</span><span data-i18n="tasks">Моите задачи</span></button>
+        <button class="nav-item" data-page="calendar" type="button"><span>▦</span><span data-i18n="calendar">Календар</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card"><span class="tip-icon">✺</span><strong data-i18n="tipTitle">Малка стъпка всеки ден.</strong><p data-i18n="tipText">Планирай спокойно и завършвай навреме.</p></div>
+        <span class="prototype" data-i18n="prototype">Прототип • Етап 1</span>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb"><span data-i18n="mySpace">Моето пространство</span><span class="slash">/</span><strong id="breadcrumb-current">Табло</strong></div>
+        <div class="top-actions">
+          <div class="lang-switch" role="group" aria-label="Language"><button id="lang-bg" type="button" class="selected">BG</button><button id="lang-en" type="button">EN</button></div>
+          <div class="avatar" aria-hidden="true">SF</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section id="page-dashboard" class="page active" aria-labelledby="welcome-title">
+          <div class="welcome-banner">
+            <div><span class="eyebrow" data-i18n="welcomeEyebrow">ТВОЯТ ПЛАН ЗА УСПЕХ</span><h1 id="welcome-title" data-i18n="welcomeTitle">Учи с план. Успявай със спокойствие.</h1><p data-i18n="welcomeDescription">Всичките ти домашни, срокове и приоритети на едно място.</p><button id="dashboard-add" class="btn btn-dark" type="button">＋ <span data-i18n="newTask">Нова задача</span></button></div>
+            <div class="hero-art" aria-hidden="true"><div class="art-circle"></div><div class="art-card"><span>✦</span><div class="art-line wide"></div><div class="art-line"></div><div class="art-check">✓</div></div><div class="art-star">✳</div></div>
+          </div>
+          <div class="section-head"><div><h2 data-i18n="overview">Общ преглед</h2><p id="today-label" class="muted"></p></div><button class="text-link" data-go="tasks" type="button"><span data-i18n="viewTasks">Виж задачите</span> →</button></div>
+          <div class="stats-grid">
+            <article class="stat-card"><span class="stat-icon stat-icon-blue">☷</span><p data-i18n="allTasks">Всички задачи</p><strong id="stat-total">0</strong><span class="stat-note" data-i18n="allTasksNote">Добавени в планера</span></article>
+            <article class="stat-card"><span class="stat-icon stat-icon-orange">◷</span><p data-i18n="upcomingTasks">Предстоящи</p><strong id="stat-upcoming">0</strong><span class="stat-note" data-i18n="upcomingNote">Незавършени задачи</span></article>
+            <article class="stat-card"><span class="stat-icon stat-icon-green">✓</span><p data-i18n="completedTasks">Завършени</p><strong id="stat-done">0</strong><span class="stat-note" data-i18n="completedNote">Отметнати като готови</span></article>
+          </div>
+          <div class="section-head lower"><div><h2 data-i18n="comingUp">Следващи задачи</h2><p class="muted" data-i18n="nextDescription">Подредени по най-близък срок</p></div></div>
+          <div id="dashboard-list" class="task-list panel"></div>
+        </section>
+
+        <section id="page-tasks" class="page" aria-labelledby="tasks-title">
+          <div class="page-heading"><div><span class="eyebrow" data-i18n="organize">ОРГАНИЗИРАЙ ДЕНЯ СИ</span><h1 id="tasks-title" data-i18n="tasksTitle">Моите задачи</h1><p data-i18n="tasksDescription">Добавяй, отбелязвай и следи домашните си.</p></div><button id="tasks-add" class="btn btn-primary" type="button">＋ <span data-i18n="newTask">Нова задача</span></button></div>
+          <div class="panel toolbar"><label for="task-search" class="sr-only" data-i18n="searchLabel">Търси задача</label><input id="task-search" type="search" placeholder="Търси задача..."><label for="task-filter" class="sr-only" data-i18n="filterLabel">Филтър</label><select id="task-filter"><option value="all" data-i18n="filterAll">Всички</option><option value="active" data-i18n="filterActive">Незавършени</option><option value="completed" data-i18n="filterDone">Завършени</option></select></div>
+          <div class="list-title"><h2 data-i18n="taskList">Списък със задачи</h2><span class="count-pill" id="task-count">0</span></div>
+          <div id="all-task-list" class="panel task-list"></div>
+          <p class="storage-note" data-i18n="storageNote">Демо версия: данните се пазят само в този браузър. Supabase ще бъде добавен по-късно.</p>
+        </section>
+
+        <section id="page-calendar" class="page" aria-labelledby="calendar-title">
+          <div class="page-heading"><div><span class="eyebrow" data-i18n="calendarEyebrow">ПЛАНИРАЙ НАПРЕД</span><h1 id="calendar-title" data-i18n="calendar">Календар</h1><p data-i18n="calendarDescription">Преглед на задачите, групирани по срок.</p></div><button id="calendar-add" class="btn btn-primary" type="button">＋ <span data-i18n="newTask">Нова задача</span></button></div>
+          <div id="calendar-list" class="calendar-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="task-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" id="task-form" class="task-form">
+      <div class="dialog-head"><div><span class="eyebrow" data-i18n="taskDetails">ДЕТАЙЛИ ЗА ЗАДАЧАТА</span><h2 id="dialog-title" data-i18n="newTask">Нова задача</h2></div><button type="button" id="close-dialog" class="close-btn" aria-label="Close">×</button></div>
+      <label for="task-title" data-i18n="titleLabel">Заглавие</label><input id="task-title" name="title" required maxlength="100" placeholder="Напр. Домашно по математика">
+      <label for="task-subject" data-i18n="subjectLabel">Предмет</label><select id="task-subject" name="subject"><option value="math" data-i18n="subjectMath">Математика</option><option value="bulgarian" data-i18n="subjectBulgarian">Български език</option><option value="biology" data-i18n="subjectBiology">Биология</option><option value="history" data-i18n="subjectHistory">История</option><option value="other" data-i18n="subjectOther">Друг</option></select>
+      <div class="form-grid"><div><label for="task-date" data-i18n="dueDate">Срок</label><input id="task-date" name="dueDate" type="date" required></div><div><label for="task-priority" data-i18n="priorityLabel">Приоритет</label><select id="task-priority" name="priority"><option value="high" data-i18n="priorityHigh">Висок</option><option value="medium" selected data-i18n="priorityMedium">Среден</option><option value="low" data-i18n="priorityLow">Нисък</option></select></div></div>
+      <div id="form-error" class="form-error" role="alert"></div>
+      <div class="form-footer"><button type="button" class="btn btn-secondary" id="cancel-dialog" data-i18n="cancel">Отказ</button><button type="submit" class="btn btn-primary" data-i18n="saveTask">Запази задачата</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
