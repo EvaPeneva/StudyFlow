@@ -1,0 +1,17 @@
+digraph StudyFlow {
+  graph [rankdir=LR, bgcolor="#ffffff", nodesep=.55, ranksep=1.1, pad=.35, label="StudyFlow  ·  ER модел  ·  Етап 2", labelloc=t, fontsize=23, fontname="DejaVu Sans", fontcolor="#403767"];
+  node [shape=plaintext, fontname="DejaVu Sans"];
+  edge [color="#8275c9", penwidth=2.0, fontname="DejaVu Sans", fontsize=10, fontcolor="#625b8e"];
+  auth [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>auth.users</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK)</TD></TR></TABLE>>];
+  profiles [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>profiles</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK, FK)</TD></TR><TR><TD ALIGN="LEFT">display_name : text</TD></TR><TR><TD ALIGN="LEFT">created_at : timestamptz</TD></TR></TABLE>>];
+  subjects [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>subjects</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK)</TD></TR><TR><TD ALIGN="LEFT">user_id : uuid (FK)</TD></TR><TR><TD ALIGN="LEFT">name : text</TD></TR><TR><TD ALIGN="LEFT">color : text</TD></TR></TABLE>>];
+  tasks [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>tasks</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK)</TD></TR><TR><TD ALIGN="LEFT">user_id : uuid (FK)</TD></TR><TR><TD ALIGN="LEFT">subject_id : uuid (FK)</TD></TR><TR><TD ALIGN="LEFT">title : text</TD></TR><TR><TD ALIGN="LEFT">due_date : date</TD></TR><TR><TD ALIGN="LEFT">priority : smallint</TD></TR><TR><TD ALIGN="LEFT">is_completed : bool</TD></TR></TABLE>>];
+  reminders [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>reminders</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK)</TD></TR><TR><TD ALIGN="LEFT">user_id : uuid (FK)</TD></TR><TR><TD ALIGN="LEFT">task_id : uuid (FK)</TD></TR></TABLE>>];
+  tags [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" COLOR="#c9c6e7" CELLPADDING="9"><TR><TD BGCOLOR="#e9e5ff"><B>task_tags</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid (PK)</TD></TR><TR><TD ALIGN="LEFT">user_id : uuid (FK)</TD></TR><TR><TD ALIGN="LEFT">task_id : uuid (FK)</TD></TR></TABLE>>];
+  auth -> profiles [label="1 : 1"];
+  profiles -> subjects [label="1 : N"];
+  profiles -> tasks [label="1 : N"];
+  subjects -> tasks [label="1 : N"];
+  tasks -> reminders [label="1 : N"];
+  tasks -> tags [label="1 : N"];
+}

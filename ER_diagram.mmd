@@ -1,0 +1,29 @@
+erDiagram
+    AUTH_USERS ||--|| PROFILES : "id"
+    PROFILES ||--o{ SUBJECTS : "user_id"
+    PROFILES ||--o{ TASKS : "user_id"
+    SUBJECTS ||--o{ TASKS : "subject_id + user_id"
+    TASKS ||--o{ REMINDERS : "task_id + user_id"
+    TASKS ||--o{ TASK_TAGS : "task_id + user_id"
+    PROFILES { uuid id PK
+      text display_name
+      timestamptz created_at }
+    SUBJECTS { uuid id PK
+      uuid user_id FK
+      text name
+      text color }
+    TASKS { uuid id PK
+      uuid user_id FK
+      uuid subject_id FK
+      text title
+      date due_date
+      smallint priority
+      boolean is_completed }
+    REMINDERS { uuid id PK
+      uuid user_id FK
+      uuid task_id FK
+      timestamptz remind_at }
+    TASK_TAGS { uuid id PK
+      uuid user_id FK
+      uuid task_id FK
+      text label }
