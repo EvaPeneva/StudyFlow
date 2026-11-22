@@ -23,7 +23,7 @@
       </nav>
       <div class="sidebar-bottom">
         <div class="tip-card"><span class="tip-icon">✺</span><strong data-i18n="tipTitle">Малка стъпка всеки ден.</strong><p data-i18n="tipText">Планирай спокойно и завършвай навреме.</p></div>
-        <span class="prototype" data-i18n="prototype">Прототип • Етап 1</span>
+        <span class="prototype" data-i18n="prototype">Прототип • Етап 2</span>
       </div>
     </aside>
 
@@ -32,7 +32,9 @@
         <div class="breadcrumb"><span data-i18n="mySpace">Моето пространство</span><span class="slash">/</span><strong id="breadcrumb-current">Табло</strong></div>
         <div class="top-actions">
           <div class="lang-switch" role="group" aria-label="Language"><button id="lang-bg" type="button" class="selected">BG</button><button id="lang-en" type="button">EN</button></div>
-          <div class="avatar" aria-hidden="true">SF</div>
+          <span id="connection-status" class="connection-status" data-state="local" role="status">Локално демо</span>
+          <button id="auth-button" type="button" class="btn btn-secondary btn-account" data-i18n="connectAccount">Вход / Регистрация</button>
+          <button id="logout-button" type="button" class="btn btn-secondary btn-account" data-i18n="signOut" hidden>Изход</button>
         </div>
       </header>
 
@@ -54,10 +56,12 @@
 
         <section id="page-tasks" class="page" aria-labelledby="tasks-title">
           <div class="page-heading"><div><span class="eyebrow" data-i18n="organize">ОРГАНИЗИРАЙ ДЕНЯ СИ</span><h1 id="tasks-title" data-i18n="tasksTitle">Моите задачи</h1><p data-i18n="tasksDescription">Добавяй, отбелязвай и следи домашните си.</p></div><button id="tasks-add" class="btn btn-primary" type="button">＋ <span data-i18n="newTask">Нова задача</span></button></div>
+          <div class="stage-panel panel" id="mode-panel"><span class="stage-icon">✦</span><div><strong data-i18n="stageModeTitle">Етап 2 — проверим прототип</strong><p id="mode-description" data-i18n="localModeDescription">В локален режим задачите се пазят само на това устройство. За Supabase настройте връзката и влезте в акаунт.</p></div></div>
+          <div class="helper-actions"><button id="add-subject" type="button" class="btn btn-secondary" data-i18n="addSubject">+ Нов предмет</button><button id="seed-button" type="button" class="btn btn-secondary" data-i18n="addExamples">Зареди примерни данни</button><button id="refresh-button" type="button" class="btn btn-secondary" data-i18n="refreshData">↻ Обнови от базата</button></div>
           <div class="panel toolbar"><label for="task-search" class="sr-only" data-i18n="searchLabel">Търси задача</label><input id="task-search" type="search" placeholder="Търси задача..."><label for="task-filter" class="sr-only" data-i18n="filterLabel">Филтър</label><select id="task-filter"><option value="all" data-i18n="filterAll">Всички</option><option value="active" data-i18n="filterActive">Незавършени</option><option value="completed" data-i18n="filterDone">Завършени</option></select></div>
           <div class="list-title"><h2 data-i18n="taskList">Списък със задачи</h2><span class="count-pill" id="task-count">0</span></div>
           <div id="all-task-list" class="panel task-list"></div>
-          <p class="storage-note" data-i18n="storageNote">Демо версия: данните се пазят само в този браузър. Supabase ще бъде добавен по-късно.</p>
+          <p class="storage-note" data-i18n="storageNote">Изберете режим: локално демо или реална Supabase база след вход.</p>
         </section>
 
         <section id="page-calendar" class="page" aria-labelledby="calendar-title">
@@ -72,11 +76,28 @@
     <form method="dialog" id="task-form" class="task-form">
       <div class="dialog-head"><div><span class="eyebrow" data-i18n="taskDetails">ДЕТАЙЛИ ЗА ЗАДАЧАТА</span><h2 id="dialog-title" data-i18n="newTask">Нова задача</h2></div><button type="button" id="close-dialog" class="close-btn" aria-label="Close">×</button></div>
       <label for="task-title" data-i18n="titleLabel">Заглавие</label><input id="task-title" name="title" required maxlength="100" placeholder="Напр. Домашно по математика">
-      <label for="task-subject" data-i18n="subjectLabel">Предмет</label><select id="task-subject" name="subject"><option value="math" data-i18n="subjectMath">Математика</option><option value="bulgarian" data-i18n="subjectBulgarian">Български език</option><option value="biology" data-i18n="subjectBiology">Биология</option><option value="history" data-i18n="subjectHistory">История</option><option value="other" data-i18n="subjectOther">Друг</option></select>
+      <label for="task-subject" data-i18n="subjectLabel">Предмет</label><select id="task-subject" name="subject" required></select>
       <div class="form-grid"><div><label for="task-date" data-i18n="dueDate">Срок</label><input id="task-date" name="dueDate" type="date" required></div><div><label for="task-priority" data-i18n="priorityLabel">Приоритет</label><select id="task-priority" name="priority"><option value="high" data-i18n="priorityHigh">Висок</option><option value="medium" selected data-i18n="priorityMedium">Среден</option><option value="low" data-i18n="priorityLow">Нисък</option></select></div></div>
       <div id="form-error" class="form-error" role="alert"></div>
       <div class="form-footer"><button type="button" class="btn btn-secondary" id="cancel-dialog" data-i18n="cancel">Отказ</button><button type="submit" class="btn btn-primary" data-i18n="saveTask">Запази задачата</button></div>
     </form>
   </dialog>
+  <dialog id="auth-dialog" aria-labelledby="auth-title">
+    <form id="auth-form" class="task-form">
+      <div class="dialog-head"><div><span class="eyebrow" data-i18n="cloudEyebrow">SUPABASE • ОБЛАК</span><h2 id="auth-title" data-i18n="authTitle">Вход в StudyFlow</h2></div><button class="close-btn" id="auth-close" type="button" aria-label="Close">×</button></div>
+      <p class="dialog-caption" data-i18n="authInfo">Използвайте тестов акаунт, не лични данни на ученици.</p>
+      <label for="auth-email" data-i18n="emailLabel">Имейл</label><input id="auth-email" type="email" required autocomplete="username" placeholder="example@example.com">
+      <label for="auth-password" data-i18n="passwordLabel">Парола</label><input id="auth-password" type="password" minlength="6" required autocomplete="current-password">
+      <div class="form-error" id="auth-error" role="alert"></div>
+      <div class="form-footer"><button id="register-submit" type="button" class="btn btn-secondary" data-i18n="register">Регистрация</button><button id="login-submit" type="submit" class="btn btn-primary" data-i18n="signIn">Вход</button></div>
+    </form>
+  </dialog>
+  <dialog id="subject-dialog" aria-labelledby="subject-dialog-title"><form id="subject-form" class="task-form">
+    <div class="dialog-head"><h2 id="subject-dialog-title" data-i18n="addSubject">Нов предмет</h2><button type="button" id="close-subject-dialog" class="close-btn" aria-label="Close">×</button></div>
+    <label for="subject-name" data-i18n="subjectName">Име на предмета</label><input id="subject-name" required maxlength="60" placeholder="Математика">
+    <div id="subject-error" class="form-error" role="alert"></div>
+    <div class="form-footer"><button type="button" id="cancel-subject-dialog" class="btn btn-secondary" data-i18n="cancel">Отказ</button><button type="submit" class="btn btn-primary" data-i18n="saveSubject">Запази предмета</button></div>
+  </form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
